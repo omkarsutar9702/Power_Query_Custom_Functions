@@ -1,0 +1,14 @@
+// Clean Column Names Function
+let
+    CleanColumnNames = (Table as table) as table =>
+    let
+        OriginalColumnNames = Table.ColumnNames(Table),
+        CleanedColumnNames = List.Transform(
+            OriginalColumnNames, 
+            each Text.Upper(Text.Replace(Text.Trim(Text.Select(_, {"A".."Z", "a".."z", "0".."9", " "})), " ", "_"))
+        ),
+        RenamedTable = Table.RenameColumns(Table, List.Zip({OriginalColumnNames, CleanedColumnNames}))
+    in
+        RenamedTable
+in
+    CleanColumnNames
